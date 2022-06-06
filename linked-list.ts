@@ -1,4 +1,4 @@
-class LinkedItem {
+export class LinkedItem {
   data: any = null
   next: any = null
   prev: any = null
@@ -8,7 +8,7 @@ class LinkedItem {
   }
 }
 
-class LinkedList {
+export class LinkedList {
   last: any = null
   first: any = null
 
