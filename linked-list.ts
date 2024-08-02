@@ -15,7 +15,6 @@ export class DoublyLinkedItem<DataType> extends SinglyLinkedItem<DataType> {
 export class SinglyLinkedList<DataType> {
   first: SinglyLinkedItem<DataType> | null = null;
   last: SinglyLinkedItem<DataType> | null = null;
-
   addToEnd(value: DataType) {
     const item = new SinglyLinkedItem(value);
 
@@ -51,9 +50,16 @@ export class SinglyLinkedList<DataType> {
   /**
    * @returns {boolean} deleting status
    */
-  remove(item: SinglyLinkedItem<DataType>): boolean {
+  remove(item: SinglyLinkedItem<DataType> | null): boolean {
+    if (!item) return false;
+
     if (this.first === item) {
-      this.first = item.next;
+      if (!this.first?.next) {
+        this.last = null;
+      }
+
+      this.first = this.first.next;
+
       return true;
     }
 
@@ -62,6 +68,11 @@ export class SinglyLinkedList<DataType> {
     while (el) {
       if (el.next === item) {
         el.next = item.next;
+
+        if (!el.next) {
+          this.last = el;
+        }
+
         return true;
       }
 
@@ -94,7 +105,7 @@ export class DoublyLinkedList<DataType> extends SinglyLinkedList<DataType> {
     return this;
   }
 
-  remove(item: DoublyLinkedItem<DataType>): boolean {
+  remove(item: DoublyLinkedItem<DataType> | null): boolean {
     if (!item) return false;
 
     if (item.prev) {
