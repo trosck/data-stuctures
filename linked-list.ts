@@ -1,19 +1,20 @@
-export class SinglyLinkedItem {
-  data: any = null;
-  next: any = null;
+export class SinglyLinkedItem<DataType> {
+  data: DataType | null = null;
+  next: SinglyLinkedItem<DataType> | null = null;
 
-  constructor(value: any) {
+  constructor(value: DataType) {
     this.data = value;
   }
 }
 
-export class DoublyLinkedItem extends SinglyLinkedItem {
+export class DoublyLinkedItem<DataType> extends SinglyLinkedItem<DataType> {
   prev: any = null;
+  next: DoublyLinkedItem<DataType> | null = null;
 }
 
-export class SinglyLinkedList {
-  first: SinglyLinkedItem | null = null;
-  last: SinglyLinkedItem | null = null;
+export class SinglyLinkedList<DataType> {
+  first: SinglyLinkedItem<DataType> | null = null;
+  last: SinglyLinkedItem<DataType> | null = null;
 
   addToEnd(value: any) {
     const item = new SinglyLinkedItem(value);
@@ -31,15 +32,13 @@ export class SinglyLinkedList {
     return this;
   }
 
-  find(findFunc: (el: SinglyLinkedItem) => boolean) {
+  find(value: DataType) {
     let el = this.first;
 
     if (!el) return null;
 
     while (el) {
-      const isFound = findFunc(el);
-
-      if (isFound) {
+      if (el.data === value) {
         return el;
       }
 
@@ -52,7 +51,7 @@ export class SinglyLinkedList {
   /**
    * @returns {boolean} deleting status
    */
-  remove(item: SinglyLinkedItem): boolean {
+  remove(item: SinglyLinkedItem<DataType>): boolean {
     if (this.first === item) {
       this.first = item.next;
       return true;
@@ -73,9 +72,9 @@ export class SinglyLinkedList {
   }
 }
 
-export class DoublyLinkedList extends SinglyLinkedList {
-  first: DoublyLinkedItem | null = null;
-  last: DoublyLinkedItem | null = null;
+export class DoublyLinkedList<DataType> extends SinglyLinkedList<DataType> {
+  first: DoublyLinkedItem<DataType> | null = null;
+  last: DoublyLinkedItem<DataType> | null = null;
 
   addToEnd(value: any) {
     const item = new DoublyLinkedItem(value);
@@ -95,7 +94,7 @@ export class DoublyLinkedList extends SinglyLinkedList {
     return this;
   }
 
-  remove(item: DoublyLinkedItem): boolean {
+  remove(item: DoublyLinkedItem<DataType>): boolean {
     if (!item) return false;
 
     if (item.prev) {
