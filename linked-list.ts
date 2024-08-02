@@ -121,3 +121,77 @@ export class DoublyLinkedList<DataType> extends SinglyLinkedList<DataType> {
     return true;
   }
 }
+
+export class CircularSinglyLinkedList<
+  DataType
+> extends SinglyLinkedItem<DataType> {
+  first: SinglyLinkedItem<DataType> | null = null;
+  last: SinglyLinkedItem<DataType> | null = null;
+
+  addToEnd(value: DataType) {
+    const item = new SinglyLinkedItem(value);
+
+    if (!this.first) {
+      this.first = item;
+    }
+
+    if (this.last) {
+      this.last.next = item;
+    }
+
+    this.last = item;
+
+    this.last.next = this.first;
+
+    return this;
+  }
+
+  find(value: DataType) {
+    let el = this.first;
+
+    if (!el) return null;
+
+    while (el) {
+      if (el.data === value) {
+        return el;
+      }
+
+      if (el === this.last) {
+        return null;
+      }
+
+      el = el.next;
+    }
+
+    return null;
+  }
+
+  /**
+   * @returns {boolean} deleting status
+   */
+  remove(item: SinglyLinkedItem<DataType> | null): boolean {
+    if (!item) return false;
+
+    if (this.first === item) {
+      this.first = item.next;
+      return true;
+    }
+
+    let el = this.first;
+
+    while (el) {
+      if (el.next === item) {
+        el.next = item.next;
+        return true;
+      }
+
+      if (el.next === this.last) {
+        return false;
+      }
+
+      el = el.next;
+    }
+
+    return false;
+  }
+}
