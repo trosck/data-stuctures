@@ -1,69 +1,113 @@
-export class LinkedItem {
-  data: any = null
-  next: any = null
-  prev: any = null
+export class SinglyLinkedItem {
+  data: any = null;
+  next: any = null;
 
   constructor(value: any) {
-    this.data = value
+    this.data = value;
   }
 }
 
-export class LinkedList {
-  last: any = null
-  first: any = null
+export class DoublyLinkedItem extends SinglyLinkedItem {
+  prev: any = null;
+}
+
+export class SinglyLinkedList {
+  first: SinglyLinkedItem | null = null;
+  last: SinglyLinkedItem | null = null;
 
   addToEnd(value: any) {
-    const item = new LinkedItem(value)
+    const item = new SinglyLinkedItem(value);
 
     if (!this.first) {
-      this.first = item
+      this.first = item;
     }
-
-    item.prev = this.last
 
     if (this.last) {
-      this.last.next = item
+      this.last.next = item;
     }
 
-    this.last = item
+    this.last = item;
 
-    return this
+    return this;
   }
 
-  find(findFunc: (el: LinkedItem) => boolean) {
-    let el: LinkedItem = this.first
+  find(findFunc: (el: SinglyLinkedItem) => boolean) {
+    let el = this.first;
 
-    if (!el) return null
+    if (!el) return null;
 
-    while(el) {
-      const isFound = findFunc(el)
+    while (el) {
+      const isFound = findFunc(el);
 
       if (isFound) {
-        return el
+        return el;
       }
 
-      el = el.next
+      el = el.next;
     }
 
-    return null
+    return null;
   }
 
   /**
    * @returns {boolean} deleting status
    */
-  remove(item: LinkedItem | null): boolean {
-    if (!item) return false
+  remove(item: SinglyLinkedItem): boolean {
+    if (this.first === item) {
+      this.first = item.next;
+      return true;
+    }
+
+    let el = this.first;
+
+    while (el) {
+      if (el.next === item) {
+        el.next = item.next;
+        return true;
+      }
+
+      el = el.next;
+    }
+
+    return false;
+  }
+}
+
+export class DoublyLinkedList extends SinglyLinkedList {
+  first: DoublyLinkedItem | null = null;
+  last: DoublyLinkedItem | null = null;
+
+  addToEnd(value: any) {
+    const item = new DoublyLinkedItem(value);
+
+    if (!this.first) {
+      this.first = item;
+    }
+
+    item.prev = this.last;
+
+    if (this.last) {
+      this.last.next = item;
+    }
+
+    this.last = item;
+
+    return this;
+  }
+
+  remove(item: DoublyLinkedItem): boolean {
+    if (!item) return false;
 
     if (item.prev) {
-      item.prev.next = item.next
+      item.prev.next = item.next;
     }
 
     if (item.next) {
-      item.next.prev = item.prev
+      item.next.prev = item.prev;
     } else {
-      this.last = item.prev
+      this.last = item.prev;
     }
 
-    return true
+    return true;
   }
 }
