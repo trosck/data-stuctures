@@ -16,7 +16,7 @@ export class SinglyLinkedList<DataType> {
   first: SinglyLinkedItem<DataType> | null = null;
   last: SinglyLinkedItem<DataType> | null = null;
 
-  addToEnd(value: any) {
+  addToEnd(value: DataType) {
     const item = new SinglyLinkedItem(value);
 
     if (!this.first) {
@@ -76,7 +76,7 @@ export class DoublyLinkedList<DataType> extends SinglyLinkedList<DataType> {
   first: DoublyLinkedItem<DataType> | null = null;
   last: DoublyLinkedItem<DataType> | null = null;
 
-  addToEnd(value: any) {
+  addToEnd(value: DataType) {
     const item = new DoublyLinkedItem(value);
 
     if (!this.first) {
